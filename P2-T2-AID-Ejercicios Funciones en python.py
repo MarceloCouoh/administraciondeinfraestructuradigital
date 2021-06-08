@@ -63,6 +63,30 @@ print(square([2.3, 5.7, 6.8, 9.7, 12.1, 15.6]))
 #Ejercicio 5
 
 #Ejercicio 6
+#Escribir una función que calcule el máximo común divisor de dos números y otra que calcule el mínimo común múltiplo.
+#PRIMERO minimocomundiv
+def calalcularmcd(numm1,numm2):
+    mcd = 1
+    if numm1 % numm2 == 0:
+        return numm2
+    for k in range(int(numm1/2), 0, -1):
+        if numm1 % a == 0 and numm2 % a == 0:
+            mcd = a
+            break
+    return mcd
+
+def calcularmcm(numer1,numer2):
+
+#Este es para el minimocomun multiplo
+  if numer1 > numer2:
+    m = numer1
+  else:
+    m = numer2
+  while (m % numer1 != 0) or (m % numer2 != 0):
+        m += 1
+  return m
+
+
 
 #Ejercicio 7
 #Escribir una función que convierta un número decimal en binario y otra que convierta un número binario en decimal.
@@ -85,3 +109,22 @@ print(f"Número en decimal: {dec(num2)}"
     
     
 #Ejercicio 8
+#Escribir una función que convierta un número decimal en binario y otra que convierta un número binario en decimal.
+
+-#definir binario a decimal
+def numerobinario(numero1):
+    totalbininario = "{0:b}".format(numero1)
+    return total_bin
+    
+numero1 = int(input("Ingresa un numero decimal: "))
+int(f"Conversion en binario: {numerobinario(numero1)}")
+#decimal a binario
+def decimal(numeros):
+    totaldecimal = int(str(numero2), 2)
+    return totaldecimal
+    
+numero2 = int(input("Ingresa un número binario: "))
+print(f"Convertir en decimal: {decimal(numero2)}")
+
+
+
