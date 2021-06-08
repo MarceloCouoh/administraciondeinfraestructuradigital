@@ -1,4 +1,12 @@
 #Ejercicio 1
+#Escribir una función que calcule el total de una factura tras aplicarle el IVA. La función debe recibir la cantidad sin IVA 
+#y el porcentaje de IVA a aplicar, y devolver el total de la factura. Si se invoca la función sin pasarle el porcentaje de IVA, deberá aplicar un 21%.
+def funcion(factur, iva=21):
+    
+    return factur + iva/100
+
+print("Total de iva ",funcion(1000,10))
+print("Total ",funcion(1000))
 
 #Ejercicio 2
 #Escribir una función que calcule el área de un círculo y otra que calcule el volumen de un cilindro usando la primera función.
@@ -55,5 +63,25 @@ print(square([2.3, 5.7, 6.8, 9.7, 12.1, 15.6]))
 #Ejercicio 5
 
 #Ejercicio 6
+
 #Ejercicio 7
+#Escribir una función que convierta un número decimal en binario y otra que convierta un número binario en decimal.
+
+def bin(num1):
+    totalbin = "{0:b}".format(num1)
+    return totalbin
+
+def dec(num2):
+    totaldec = int(str(num2), 2)
+    return totaldec
+    
+#formula fin
+print("CONVERTIDOR")
+num1 = int(input("Digita un numero decimal: "))
+num2 = int(input("Digita un número binario: "))
+
+print(f"Número en binario: {bin(num1)}")
+print(f"Número en decimal: {dec(num2)}"    
+    
+    
 #Ejercicio 8
