@@ -1,0 +1,281 @@
+#Ejercicio 1 
+#Escribir un programa que acceda a un fichero de internet mediante su url y muestre por pantalla el número de palabras que contiene.
+
+
+def direccion(url):
+    from urllib import request
+    from urllib.error import URLError
+    try:
+        pagina = request.urlopen(url)
+    except URLError:
+        return('La direcion URL solicitada ' + url + ' no existe')
+    else:
+        cont = pagina.read()
+        return len(cont.split())
+
+print(direccion('https://www.gutenberg.org/cache/epub/65602/pg65602.html'))
+print(direccion('https://no-existe.txt'))
+
+
+#Ejercicio 2
+#Escribir un programa que abra el fichero con información sobre el PIB per cápita de los países de la Unión Europea (url:https://ec.
+#europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?file=data/sdg_08_10.tsv.gz&unzip=true), pregunte por las iniciales de un país y muestre el PIB 
+#per cápita de ese país de todos los años disponibles.
+
+def pib(url, pais='ES'):
+    from urllib import request
+    from urllib.error import URLError
+    try:
+        fuente = request.urlopen(url)
+    except URLError:
+        return('¡La url ' + url + ' no existe!')
+    else:
+        datos = fuente.read().decode('utf-8').split('\n') # Leer los datos y guardar en una lista
+        datos = [i.split('\t') for i in dato] # Dividir cada línea con el tabulador
+        datos = [list(map(str.strip, i)) for i in dato] # Eliminar espacios en blanco
+        for i in datos:
+            i[0] = i[0].split(',')[-1] #Código del país del primer elemento de la lista
+        datos[0][0] = 'years'
+        datos = {i[0]:i[1:] for i in datos}
+        resultado = {datos['years'][i]:datos[pais][i] for i in range(len(datos['years']))}
+        return resultado
+
+pais = input('Introduce el código de un país: ')
+print('Producto Interior Bruto per cápita de', pais)
+print('Año', '\t', 'PIB')
+for year, pib2 in pib('https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?file=data/sdg_08_10.tsv.gz&unzip=true').items():
+    print(year, '\t', pib2)
+
+
+
+
+
+
+
+#Ejercicio 3
+#Escribir un programa para gestionar un listín telefónico con los nombres y los teléfonos de los clientes de una empresa. El programa incorporarfunciones crear el fichero 
+#con el listín si no existe, para consultar el teléfono de un cliente, añadir el teléfono de un nuevo cliente y eliminar el teléfono de un cliente. 
+#El listín debe estar guardado en el fichero de texto listin.txtdonde el nombre del cliente y su teléfono deben aparecer separados por comas y cada cliente en una línea distinta.
+
+def telefono(archivo, cliente):
+
+    try: 
+        f = open(archivo, 'r')
+    except FileNotFoundError:
+        return('Este es el fichero ' + archivo + ' no existe!\n')
+    else:
+        directory = f.readlines()
+        f.close()
+        directory = dict([tuple(line.split(',')) for line in directory])
+        if cliente in directory:
+            return directory[cliente]
+        else:
+            return('¡el cliente es ' + cliente + ' no existe!\n')
+
+
+def anadir_telefono(archivo, cliente, telfono):
+
+    try: 
+        f = open(archivo, 'a')
+    except FileNotFoundError:
+        return('¡EL Fichero es ' + archivo + ' no existe!\n')
+    else:
+        f.write(cliente + ',' + telfono + '\n')
+        f.close()
+        return('ya tiene en sus contacto el telefono.\n')
+
+def remover_cel(archivo, cliente):
+
+    try: 
+        f = open(archivo, 'r')
+    except FileNotFoundError:
+        return('Es fichero ' + archivo + ' no existe!\n')
+    else:
+        directory = f.readlines()
+        f.close()
+        directory = dict([tuple(line.split(',')) for line in directory])
+        if client in directory:
+            del directory[cliente]
+            f = open(archivo, 'w')
+            for name, telfono in directory.items():
+                f.write(name + ',' + telfono)
+            f.close()
+            return ('¡El cliente se ha borrado!\n')
+        else:
+            return('¡Este contacto ' + cliente + ' no existe!\n')
+
+
+def crear_directorio(archivo):
+
+    import os
+    if os.path.isfile(archivo):
+        answer = input('El fichero ' + archivo + ' ya existe. ¿Desea vaciarlo (S/N)? ')
+        if answer == 'N': 
+            return 'No se ha creado el fichero porque ya existe.\n'
+    f = open(archivo, 'w')
+    f.close()
+    return 'Se ha creado el fichero.\n'
+     
+
+def menu():
+
+    print('Lista de Contactos')
+    print("")
+    print('1 - Consultar un nombre y teléfono')
+    print('2 - Añadir un nombre y teléfono')
+    print('3 - Eliminar un nombre y teléfono')
+    print('4 - vaciar lista de contactos')
+    print('0 - Terminar')
+    option = input('Introduzca el número de la opción deseada: ')
+    return option
+
+
+def directory():
+    archivo = 'contacto.txt' 
+    while True:
+        option = menu()
+        if option == '1':
+            name = input('Digite el nombre del cliente: ')
+            print(telefono(archivo, name))
+        elif option == '2':
+            name = input('Digite el nombre del cliente: ')
+            telf = input('Digite el teléfono del cliente: ')
+            print(anadir_telefono(archivo, name, telf))
+        elif option == '3':
+            name = input('Digite el nombre del cliente: ')
+            print(remover_celular(archivo, name))
+        elif option == '4':
+            print(crear_directorio(archivo))
+        else:
+            break
+    return
+
+
+
+
+
+
+#ejercicio 4
+#Escribir una función que aplique un descuento a un precio y otra que aplique el IVA a un precio. Escribir una tercera función que reciba un diccionario con los precios y porcentajes 
+#de una cesta de la compra, y una de las funciones anteriores, y utilice la función pasada para aplicar los descuentos o el IVA a los productos de la cesta y devolver el precio final de la cesta.
+
+
+
+
+#Ejerccio 5 
+#Escribir una función que simule una calculadora científica que permita calcular el seno, coseno, tangente, exponencial y logaritmo neperiano. 
+#La función preguntará al usuario el valor y la función a aplicar, y mostrará por pantalla una tabla con los enteros de 1 al valor introducido y el resultado de 
+#aplicar la función a esos enteros.
+
+from math import sin, cos, tan, exp, log
+
+def funcion(f, n):
+    funciones = {'sin':sin, 'cos':cos, 'tan':tan, 'exp':exp, 'log':log}
+    resultado = {}
+    for i in range(1, n+1):
+        resultado[i] = funciones[f](i)
+    return resultado
+
+def calcular():
+    n = int(input('Ingresa un numero positivo: '))
+    f = input('aplique cualquier funcion (sin, cos, tan, exp, log): ')
+    for i, j in funcion(f, n).items():
+        print (i, '\t', j)
+    return
+
+calcular()
+
+
+
+
+
+
+#ejercicio 6
+#Escribir una función reciba una lista de notas y devuelva la lista de calificaciones correspondientes a esas notas.
+
+def funcion(notas):
+    
+    if notas < 5:
+        return 'D'
+    elif notas < 7:
+        return 'C'
+    elif notas < 9:
+        return 'B'
+    elif notas < 10:
+        return 'A'
+    else:
+        return '0'
+
+def apli(puntos):
+   
+    return list(map(funcion, notas))
+notas = int(input("Ingresa una calificacion entera entre 0 y 10: "))
+
+print(apli([6.5, 5, 3.4, 8.2, 2.1, 9.7, 10]))
+
+
+
+
+#Ejercicio 7
+#Corregir los errores sintácticos del siguiente programa:
+
+contraseña = input('Introduce la contraseña:')
+if contraseña in ['sesamo']:
+    print('Pasa')
+else:
+    print('No pasa')
+
+
+
+
+
+#Ejercicio 8 
+#Detectar y corregir los errores del siguiente programa que aplica el iva a una factura:
+base = int(input('Introduce la base imponible de la factura: '))
+
+def funcion_iva(base, iva = 16):
+    base += base * iva / 100  
+    return base 
+print(funcion_iva(base))
+
+
+
+
+#Ejerecicio 9
+#Detectar y corregir los errores del siguiente programa que multiplica dos matrices:
+
+a = ((10, 26, 67),
+     (93, 82, 61))
+b = ((90, 45),
+     (31, 43),
+     (52, 65))
+
+def pro(a, b):
+    pro = []
+    for i in range(len(a)):
+        fila = [] 
+        for j in range(len(b[0])):
+            suma = 0
+            for k in range(len(a[0])):
+                suma += a[i][k] * b[k][j]
+            fila.append(suma)
+        pro.append(tuple(fila))
+    return tuple(pro)
+
+print(pro(a, b))
+
+
+
+
+#Ejercicio 10
+#Detectar y corregir los errores del siguiente programa que calcula el producto escalar de dos vectores:
+
+u = [1, 2, 3]
+v = [4, 5, 6]
+
+def producto_escalar(u, v):
+    for i in range(len(u)):
+        u[i] *= v[i]
+    return sum(u)
+
+print(producto_escalar(u, v))
